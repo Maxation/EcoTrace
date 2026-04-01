@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>EcoTrace Dashboard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&family=DM+Serif+Display&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream:#F5F5DC; --green:#228B22; --green2:#1B5E20; --amber:#FFBF00;
+      --text:#2C2C1E; --muted:#6B6B50; --border:#D4D4AA; --white:#FAFAF0;
+    }
+    body { width: 360px; min-height: 560px; background: var(--cream);
+           font-family: 'DM Sans', system-ui, sans-serif; color: var(--text); }
+
+    /* ── Header ── */
+    .header { background: linear-gradient(135deg, #228B22 0%, #1B5E20 100%);
+              padding: 16px 18px 20px; position: relative; overflow: hidden; }
+    .header::before { content:""; position:absolute; inset:0;
+      background: url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 3C14 9 13 14 16 20c1 3 4 4 4 4s3-1 4-4c3-6 2-11-4-17z' fill='%23ffffff' opacity='0.04'/%3E%3C/svg%3E") repeat; }
+    .header-logo { display:flex; align-items:center; gap:10px; margin-bottom:14px; position:relative; }
+    .logo-text h1 { font-family:'DM Serif Display',serif; color:#fff; font-size:19px; line-height:1; }
+    .logo-text p { color:rgba(255,255,255,0.7); font-size:11px; margin-top:2px; }
+
+    /* ── Hero ── */
+    .hero { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2);
+            border-radius:12px; padding:12px 16px; position:relative; }
+    .hero-label { font-size:9.5px; text-transform:uppercase; letter-spacing:1px;
+                  color:rgba(255,255,255,0.65); margin-bottom:3px; }
+    .hero-value { font-size:36px; font-weight:800; color:#fff; line-height:1;
+                  letter-spacing:-1px; }
+    .hero-unit { font-size:13px; color:rgba(255,255,255,0.75); margin-top:1px; }
+    .hero-equiv { font-size:11.5px; color:var(--amber); font-weight:600; margin-top:6px; }
+    .xp-badge { position:absolute; top:10px; right:12px; background:var(--amber);
+                color:#5D4037; padding:4px 9px; border-radius:20px; font-size:11px;
+                font-weight:800; }
+
+    /* ── Budget-Balken im Header ── */
+    .budget-pill { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);
+                   border-radius:9px; padding:8px 12px; margin-top:10px; position:relative; }
+    .budget-top { display:flex; justify-content:space-between; font-size:10.5px;
+                  color:rgba(255,255,255,0.8); margin-bottom:5px; }
+    .budget-track { background:rgba(255,255,255,0.15); border-radius:5px;
+                    height:12px; overflow:hidden; }
+    .budget-fill { height:100%; border-radius:5px; transition:width 0.5s;
+                   display:flex; align-items:center; padding-left:6px; }
+    .budget-fill span { font-size:9px; font-weight:700; color:#fff; }
+
+    /* ── Stats ── */
+    .stats-row { display:grid; grid-template-columns:1fr 1fr; gap:10px;
+                 padding:12px 14px 0; }
+    .stat-card { background:var(--white); border:1px solid var(--border);
+                 border-radius:11px; padding:11px; text-align:center; }
+    .stat-icon { font-size:18px; margin-bottom:3px; }
+    .stat-val { font-size:18px; font-weight:800; color:var(--green); line-height:1; }
+    .stat-lbl { font-size:9.5px; color:var(--muted); margin-top:3px; text-transform:uppercase; letter-spacing:0.5px; }
+
+    /* ── Tabs ── */
+    .tabs { display:flex; border-bottom:2px solid var(--border); margin:12px 14px 0; }
+    .tab { flex:1; padding:8px 4px; background:none; border:none; cursor:pointer;
+           font-size:11.5px; font-weight:600; color:var(--muted); font-family:inherit;
+           border-bottom:2px solid transparent; margin-bottom:-2px; transition:all 0.2s; }
+    .tab.active { color:var(--green); border-bottom-color:var(--green); }
+
+    /* ── Tab-Content ── */
+    .tab-panel { display:none; padding:12px 14px 14px; }
+    .tab-panel.active { display:block; }
+
+    /* ── Log-Tab ── */
+    .section-title { font-size:10px; font-weight:700; text-transform:uppercase;
+                     letter-spacing:0.7px; color:var(--muted); margin-bottom:8px; }
+    .log-list { display:flex; flex-direction:column; gap:5px; }
+    .log-item { background:var(--white); border:1px solid var(--border); border-radius:9px;
+                padding:8px 11px; display:flex; justify-content:space-between; align-items:center; }
+    .log-title { font-size:11.5px; color:var(--text); max-width:195px;
+                 overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .log-meta { font-size:10px; color:var(--muted); margin-top:2px; }
+    .log-savings { font-size:13px; font-weight:700; color:var(--green); white-space:nowrap; }
+    .log-empty { text-align:center; color:var(--muted); font-size:12px; padding:20px; line-height:1.6; }
+
+    /* ── Achievements-Tab ── */
+    .ach-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+    .ach-card { background:var(--white); border:1px solid var(--border); border-radius:10px;
+                padding:10px; display:flex; flex-direction:column; align-items:center;
+                text-align:center; gap:4px; transition:all 0.2s; }
+    .ach-card.locked { opacity:0.4; filter:grayscale(1); }
+    .ach-card.unlocked { border-color:var(--green); box-shadow:0 2px 8px rgba(34,139,34,0.12); }
+    .ach-card:hover { transform:translateY(-1px); }
+    .ach-icon-big { font-size:24px; }
+    .ach-title-sm { font-size:11px; font-weight:700; color:var(--text); line-height:1.2; }
+    .ach-desc-sm { font-size:9.5px; color:var(--muted); line-height:1.3; }
+    .ach-xp-sm { font-size:10px; font-weight:700; color:var(--amber);
+                  background:#FFF8E1; padding:1px 6px; border-radius:10px; }
+    .ach-progress-wrap{width:100%;height:4px;background:#E8E8CC;border-radius:4px;margin-top:5px;overflow:hidden}
+    .ach-progress-bar{height:100%;background:linear-gradient(90deg,var(--amber),#E65100);border-radius:4px;transition:width 0.4s ease}
+    .ach-progress-lbl{font-size:8.5px;color:var(--muted);margin-top:2px;text-align:center}
+
+    /* ── Level-Progress ── */
+    .level-bar { background:var(--white); border:1px solid var(--border); border-radius:11px;
+                 padding:11px 12px; margin-bottom:10px; }
+    .level-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .level-title { font-size:14px; font-weight:700; }
+    .level-xp { font-size:11px; color:var(--muted); }
+    .level-track { background:var(--border); border-radius:6px; height:10px; overflow:hidden; }
+    .level-fill { height:100%; background:linear-gradient(90deg,#228B22,#4CAF50);
+                  border-radius:6px; transition:width 0.6s; }
+
+    /* ── Actions ── */
+    .action-row { display:flex; gap:8px; margin-top:12px; }
+    .btn { flex:1; padding:9px; border-radius:9px; font-size:11.5px; font-weight:600;
+           cursor:pointer; font-family:inherit; transition:all 0.2s; }
+    .btn-primary { background:var(--green); color:#fff; border:none; }
+    .btn-primary:hover { background:var(--green2); }
+    .btn-outline { background:transparent; color:var(--green); border:1.5px solid var(--green); }
+    .btn-outline:hover { background:rgba(34,139,34,0.07); }
+    .btn-danger { background:transparent; color:#C62828; border:1.5px solid #FFCDD2; }
+    .btn-danger:hover { background:#FFEBEE; border-color:#C62828; }
+    .btn-amber { background:var(--amber); color:#5D4037; border:none; font-weight:700; }
+    .btn-amber:hover { background:#F0B000; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width:4px; }
+    ::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+    /* ── Footer-Bar ── */
+    .footer-bar { display:flex; gap:0; border-top:1px solid var(--border);
+                  background:var(--white); position:sticky; bottom:0; z-index:10; }
+    .footer-btn { flex:1; padding:9px 4px; background:none; border:none; cursor:pointer;
+                  font-size:11px; font-weight:600; color:var(--muted); font-family:inherit;
+                  transition:all 0.2s; display:flex; flex-direction:column; align-items:center;
+                  gap:3px; line-height:1; }
+    .footer-btn:hover { color:var(--green); background:rgba(34,139,34,0.06); }
+    .footer-btn-icon { font-size:15px; }
+
+    /* ── Inline Panels ── */
+    #panels-wrap { position:relative; }
+    .popup-panel { background:var(--white); border-top:2px solid var(--green);
+                   transition:opacity 0.2s, transform 0.2s; }
+    .pp-header { display:flex; justify-content:space-between; align-items:center;
+                 padding:10px 14px 8px; background:linear-gradient(135deg,#228B22,#1B5E20);
+                 position:sticky; top:0; z-index:5; }
+    .pp-header span { color:#fff; font-size:13px; font-weight:700; }
+    .pp-close { background:rgba(255,255,255,0.2); border:none; color:#fff; width:24px; height:24px;
+                border-radius:50%; cursor:pointer; font-size:13px; display:flex;
+                align-items:center; justify-content:center; }
+    .pp-close:hover { background:rgba(255,255,255,0.35); }
+    .pp-body { padding:10px 14px 16px; max-height:420px; overflow-y:auto; }
+    .pp-section { margin-bottom:14px; }
+    .pp-section-title { font-size:10px; font-weight:700; text-transform:uppercase;
+                        letter-spacing:0.7px; color:var(--muted); margin-bottom:7px; }
+    .pp-text { font-size:11px; color:var(--text); line-height:1.5; }
+    .pp-mode-row { display:flex; gap:6px; margin-bottom:6px; }
+    .pp-mode-btn { flex:1; padding:6px 8px; border:1.5px solid var(--border); border-radius:8px;
+                   background:var(--white); cursor:pointer; font-family:inherit; font-size:11px;
+                   font-weight:600; color:var(--muted); text-align:center; transition:all 0.15s; }
+    .pp-mode-btn span { display:block; font-size:9px; font-weight:400; margin-top:2px; color:#aaa; }
+    .pp-mode-btn.active { border-color:var(--green); color:var(--green); background:#F0FFF0; }
+    .pp-toggle-row { display:flex; align-items:center; gap:8px; padding:4px 0;
+                     font-size:12px; cursor:pointer; color:var(--text); }
+    .pp-toggle-row input { width:14px; height:14px; accent-color:var(--green); cursor:pointer; }
+    .pp-label { font-size:11px; color:var(--muted); margin-bottom:4px; display:block; }
+    .pp-select { width:100%; padding:6px 8px; border:1.5px solid var(--border); border-radius:8px;
+                 font-family:inherit; font-size:12px; background:var(--white); color:var(--text); }
+    .pp-key-row { margin-top:8px; }
+    .pp-key-row label { font-size:11px; color:var(--muted); display:block; margin-bottom:4px; }
+    .pp-save-btn { width:100%; padding:10px; background:var(--green); color:#fff; border:none;
+                   border-radius:9px; font-family:inherit; font-size:13px; font-weight:700;
+                   cursor:pointer; margin-top:8px; transition:background 0.2s; }
+    .pp-save-btn:hover { background:var(--green2); }
+    .pp-kofi-btn { display:inline-block; padding:10px 20px; background:#FF5E5B;
+                   color:#fff; border-radius:9px; text-decoration:none; font-weight:700;
+                   font-size:13px; transition:opacity 0.2s; }
+    .pp-kofi-btn:hover { opacity:0.85; }
+
+    /* ── Wishlist ── */
+    .wishlist-item { background:var(--white); border:1px solid var(--border); border-radius:9px;
+                     padding:9px 11px; margin-bottom:6px; position:relative; }
+    .wishlist-item-title { font-size:12px; font-weight:600; color:var(--text);
+                           padding-right:24px; line-height:1.3; }
+    .wishlist-item-meta { font-size:10px; color:var(--muted); margin-top:3px; }
+    .wishlist-item-reminder { font-size:10px; color:var(--amber); font-weight:600; margin-top:3px; }
+    .wishlist-item-actions { display:flex; gap:5px; margin-top:7px; flex-wrap:wrap; }
+    .wishlist-search-btn { font-size:10.5px; padding:4px 9px; border-radius:6px;
+                           border:1.5px solid; font-family:inherit; cursor:pointer;
+                           font-weight:600; background:transparent; transition:opacity 0.15s; }
+    .wishlist-search-btn:hover { opacity:0.75; }
+    .wishlist-delete-btn { position:absolute; top:8px; right:9px; background:none;
+                           border:none; cursor:pointer; font-size:14px; color:var(--muted);
+                           line-height:1; padding:2px; }
+    .wishlist-delete-btn:hover { color:#C62828; }
+    .wishlist-co2-badge { font-size:9.5px; background:#E8F5E9; color:#2E7D32;
+                          padding:2px 7px; border-radius:10px; font-weight:700;
+                          display:inline-block; margin-top:4px; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo">
+      <svg width="36" height="36" viewBox="0 0 36 36">
+        <circle cx="18" cy="18" r="18" fill="rgba(255,255,255,0.15)"/>
+        <path d="M18 4C12 10 11 16 14 22c1.5 3 4 5 4 5s2.5-2 4-5c3-6 2-12-4-18z" fill="#fff"/>
+        <path d="M18 22 Q15 16 12 12" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>
+      <div class="logo-text">
+        <h1>EcoTrace</h1>
+        <p id="lbl-dashboard">CO₂-Dashboard</p>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="xp-badge" id="xp-badge">0 XP</div>
+      <div class="hero-label" id="lbl-total-savings">Gesamtersparnis</div>
+      <div class="hero-value" id="total-savings">0.0</div>
+      <div class="hero-unit" id="lbl-co2-saved">kg CO₂ gespart</div>
+      <div class="hero-equiv" id="hero-equiv">🌱 Starte auf Amazon.de!</div>
+    </div>
+
+    <!-- Budget-Balken -->
+    <div class="budget-pill" id="budget-pill" style="display:none">
+      <div class="budget-top">
+        <span id="lbl-monthly-budget">Monatsbudget</span>
+        <span id="budget-label">0 / 0 kg</span>
+      </div>
+      <div class="budget-track">
+        <div class="budget-fill" id="budget-fill" style="width:0%">
+          <span id="budget-pct-label"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon">🔍</div>
+      <div class="stat-val" id="scan-count">0</div>
+      <div class="stat-lbl" id="lbl-scans">Scans</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🏅</div>
+      <div class="stat-val" id="ach-count">0</div>
+      <div class="stat-lbl" id="lbl-achievements">Achievements</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" data-tab="log" id="tab-lbl-log">📋 Aktivitäten</button>
+    <button class="tab" data-tab="achievements" id="tab-lbl-badges">🏅 Badges</button>
+    <button class="tab" data-tab="actions" id="tab-lbl-actions">⚡ Aktionen</button>
+    <button class="tab" data-tab="wishlist" id="tab-lbl-wishlist">⭐ Wunschliste</button>
+  </div>
+
+  <!-- Tab: Log -->
+  <div class="tab-panel active" id="tab-log">
+    <div class="section-title" id="lbl-recent">Letzte Aktivitäten</div>
+    <div class="log-list" id="log-list">
+      <div class="log-empty">
+        <div style="font-size:32px;margin-bottom:8px">🛍️</div>
+        Besuche eine Produktseite auf<br>Amazon.de und speichere deine<br>erste CO₂-Ersparnis!
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Achievements -->
+  <div class="tab-panel" id="tab-achievements">
+    <div class="level-bar" id="level-bar"></div>
+    <div class="section-title" id="lbl-all-badges">Alle Badges</div>
+    <div class="ach-grid" id="ach-grid"></div>
+  </div>
+
+  <!-- Tab: Wishlist -->
+  <div class="tab-panel" id="tab-wishlist">
+    <div class="section-title" id="lbl-wishlist-title">Meine Wunschliste</div>
+    <div id="wishlist-add-row" style="display:flex;gap:6px;margin-bottom:10px">
+      <input type="text" id="wishlist-input" placeholder="Produktname eingeben…"
+             style="flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px">
+      <button class="btn btn-primary" id="wishlist-add-btn" style="flex-shrink:0;padding:7px 12px">+ Merken</button>
+    </div>
+    <div id="wishlist-list"></div>
+    <div id="wishlist-empty" style="display:none;text-align:center;color:var(--muted);font-size:12px;padding:20px">
+      <div style="font-size:28px;margin-bottom:6px">⭐</div>
+      <span id="lbl-wishlist-empty">Noch keine Produkte auf der Wunschliste.</span>
+    </div>
+  </div>
+
+  <!-- Tab: Aktionen -->
+  <div class="tab-panel" id="tab-actions">
+    <div class="section-title" id="lbl-report-mgmt">Report & Verwaltung</div>
+    <div class="action-row">
+      <button class="btn btn-amber" id="btn-report" id="btn-report">📊 <span id="lbl-report">Monatsbericht</span></button>
+      <button class="btn btn-primary" id="btn-options" id="btn-options">⚙ <span id="lbl-settings-act">Einstellungen</span></button>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-outline" id="btn-csv-export" id="btn-csv-export">📥 <span id="lbl-csv">CO₂-Daten als CSV</span></button>
+      <button class="btn btn-outline" id="btn-osm" id="btn-osm">🗺️ <span id="lbl-nearby">Second-Hand in der Nähe</span></button>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-danger" id="btn-reset" id="btn-reset">🗑 <span id="lbl-reset">Daten zurücksetzen</span></button>
+    </div>
+  </div>
+
+  <!-- Inline Panels -->
+  <div id="panels-wrap"></div>
+
+  <!-- Footer Bar -->
+  <div class="footer-bar">
+    <button class="footer-btn" id="footer-settings">
+      <span class="footer-btn-icon">⚙️</span>
+      <span id="lbl-footer-settings">Einstellungen</span>
+    </button>
+    <button class="footer-btn" id="footer-sources">
+      <span class="footer-btn-icon">🔍</span>
+      <span id="lbl-footer-sources">Datenquellen</span>
+    </button>
+    <button class="footer-btn" id="footer-support">
+      <span class="footer-btn-icon">☕</span>
+      <span id="lbl-footer-support">Support</span>
+    </button>
+  </div>
+
+
+  <script src="services/i18n.js"></script>
+  <script src="carbonLogic.js"></script>
+  <script src="services/utils.js"></script>
+  <script src="services/achievementService.js"></script>
+  <script src="services/circularSwap.js"></script>
+  <script src="services/reportService.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

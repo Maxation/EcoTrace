@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoTrace – Einstellungen</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #F5F5DC;
+      --green:   #228B22;
+      --green2:  #1B5E20;
+      --amber:   #FFBF00;
+      --blue:    #1565C0;
+      --text:    #2C2C1E;
+      --muted:   #6B6B50;
+      --border:  #D4D4AA;
+      --white:   #FAFAF0;
+      --red:     #C62828;
+    }
+
+    body {
+      width: 480px;
+      min-height: 560px;
+      background: var(--cream);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── Page header ── */
+    .page-header {
+      background: linear-gradient(135deg, #228B22, #1B5E20);
+      padding: 16px 20px 18px;
+    }
+    .header-logo { display:flex; align-items:center; gap:11px; margin-bottom:4px; }
+    .header-icon {
+      width:42px; height:42px; background:rgba(255,255,255,0.15);
+      border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+    .page-title { font-family:'DM Serif Display',serif; color:#fff; font-size:20px; line-height:1; }
+    .page-subtitle { font-size:11px; color:rgba(255,255,255,0.7); margin-top:2px; }
+
+    /* ── Sections ── */
+    .section { padding: 0 16px; margin-top: 14px; }
+    .section-label {
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--muted);
+      padding: 0 0 6px; border-bottom: 1px dashed var(--border);
+      margin-bottom: 10px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .card-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 14px 9px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.5);
+    }
+    .card-icon { font-size: 18px; flex-shrink: 0; }
+    .card-title { font-size: 13px; font-weight: 700; color: var(--text); }
+    .card-subtitle { font-size: 10.5px; color: var(--muted); margin-top: 1px; }
+    .card-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 11px; }
+
+    /* ── Source-Mode Slider ── */
+    .source-mode {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: #F0F0E0;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      overflow: hidden;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+    .mode-btn {
+      flex: 1; padding: 8px 10px; text-align: center; cursor: pointer;
+      border: none; background: transparent; font-family: inherit;
+      font-size: 11.5px; font-weight: 600; color: var(--muted);
+      transition: all 0.2s; line-height: 1.3;
+    }
+    .mode-btn.active-db  { background: var(--green);  color: #fff; border-radius: 7px; }
+    .mode-btn.active-api { background: var(--blue);   color: #fff; border-radius: 7px; }
+    .mode-divider { width: 1px; background: var(--border); align-self: stretch; flex-shrink: 0; }
+
+    /* ── Status pill ── */
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 700; padding: 3px 8px;
+      border-radius: 20px;
+    }
+    .status-pill.db  { background: #E8F5E9; color: var(--green2); }
+    .status-pill.api { background: #E3F2FD; color: var(--blue); }
+    .status-pill.off { background: #F5F5F5; color: var(--muted); }
+
+    /* ── API Key Field ── */
+    .api-key-field {
+      display: none; /* shown/hidden via JS */
+      flex-direction: column; gap: 6px;
+    }
+    .api-key-field.visible { display: flex; }
+    .key-label {
+      font-size: 10.5px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .key-input-row { display: flex; gap: 7px; }
+    input[type="password"], input[type="text"], input[type="number"] {
+      flex: 1; padding: 8px 11px;
+      background: var(--cream); border: 1.5px solid var(--border);
+      border-radius: 8px; font-size: 12px; font-family: inherit;
+      color: var(--text); outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(34,139,34,0.1); }
+    input.is-valid { border-color: var(--green); }
+    input.is-invalid { border-color: var(--red); }
+    .btn-icon {
+      padding: 0 11px; border: 1.5px solid var(--border); border-radius: 8px;
+      background: transparent; cursor: pointer; font-size: 14px;
+      transition: all 0.2s; flex-shrink: 0;
+    }
+    .btn-icon:hover { border-color: var(--green); }
+
+    /* ── API Test Banner ── */
+    .api-test-banner {
+      font-size: 11px; font-weight: 600; padding: 6px 10px;
+      border-radius: 7px; display: none;
+    }
+    .api-test-banner.testing { display:block; background:#E3F2FD; color:var(--blue); }
+    .api-test-banner.ok      { display:block; background:#E8F5E9; color:var(--green2); }
+    .api-test-banner.error   { display:block; background:#FFEBEE; color:var(--red); }
+
+    /* ── DB Info ── */
+    .db-info {
+      background: linear-gradient(135deg,#E8F5E9,#F1F8E9);
+      border: 1px solid #A5D6A7; border-radius: 8px;
+      padding: 8px 11px; font-size: 10.5px; color: var(--green2);
+      line-height: 1.55;
+    }
+    .db-info strong { font-weight: 700; }
+
+    /* ── Preferences toggles ── */
+    .pref-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 0; border-bottom: 1px dashed var(--border);
+    }
+    .pref-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .pref-lbl { font-size: 12.5px; font-weight: 600; }
+    .pref-sub { font-size: 10px; color: var(--muted); margin-top: 1px; }
+    /* Toggle switch */
+    .toggle { position:relative; width:38px; height:20px; flex-shrink:0; }
+    .toggle input { opacity:0; width:0; height:0; }
+    .slider {
+      position:absolute; inset:0; background:#D4D4AA; border-radius:20px;
+      cursor:pointer; transition:0.25s;
+    }
+    .slider::before {
+      content:""; position:absolute; width:14px; height:14px;
+      border-radius:50%; background:#fff; top:3px; left:3px;
+      transition:0.25s; box-shadow:0 1px 3px rgba(0,0,0,0.12);
+    }
+    input:checked + .slider { background: var(--green); }
+    input:checked + .slider::before { transform: translateX(18px); }
+
+    /* ── Stats ── */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    }
+    .stat-box {
+      background: var(--cream); border: 1px solid var(--border);
+      border-radius: 9px; padding: 10px 8px; text-align: center;
+    }
+    .stat-num { font-size: 20px; font-weight: 800; color: var(--green); line-height: 1; }
+    .stat-lbl { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); margin-top: 3px; }
+
+    /* ── Buttons ── */
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      padding: 9px 16px; border-radius: 9px; font-size: 12px;
+      font-weight: 700; font-family: inherit; cursor: pointer;
+      transition: all 0.2s; border: none;
+    }
+    .btn-primary { background: var(--green); color: #fff; }
+    .btn-primary:hover { background: var(--green2); transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--green); border: 1.5px solid var(--green); }
+    .btn-outline:hover { background: rgba(34,139,34,0.07); }
+    .btn-danger { background: transparent; color: var(--red); border: 1.5px solid #FFCDD2; }
+    .btn-danger:hover { background: #FFEBEE; border-color: var(--red); }
+
+    /* ── Separator ── */
+    .sep { height: 1px; background: var(--border); margin: 4px 0; }
+
+    /* ── Footer ── */
+    .page-footer {
+      text-align: center; font-size: 10.5px; color: var(--muted);
+      padding: 12px 16px 20px;
+      border-top: 1px dashed var(--border);
+      margin-top: 14px;
+    }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed; bottom: 18px; left: 50%;
+      transform: translateX(-50%) translateY(50px);
+      background: var(--green2); color: #fff;
+      padding: 9px 20px; border-radius: 22px;
+      font-size: 12.5px; font-weight: 600;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+      opacity: 0; pointer-events: none; z-index: 999;
+      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    a { color: var(--green); }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-logo">
+      <div class="header-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24">
+          <path d="M12 3C8 7 7 10 9 14c1 2 3 3 3 3s2-1 3-3c2-4 1-7-3-11z" fill="#fff"/>
+          <path d="M12 14 Q10 11 8 9" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="page-title">EcoTrace Einstellungen</div>
+        <div class="page-subtitle">Datenquellen · API-Keys · Präferenzen</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       DATENQUELLEN
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">⚡ Datenquellen konfigurieren</div>
+
+    <!-- CO₂-Berechnung -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">📦</span>
+        <div>
+          <div class="card-title">CO₂-Berechnung</div>
+          <div class="card-subtitle">Produktspezifische Emissionswerte</div>
+        </div>
+        <span class="status-pill db" id="co2-status-pill" style="margin-left:auto">● Datenbank</span>
+      </div>
+      <div class="card-body">
+        <!-- Mode-Switcher -->
+        <div class="source-mode" id="co2-mode">
+          <button class="mode-btn active-db" data-mode="db">
+            📋 Offline-DB<br><small style="font-weight:400;opacity:0.85">304 Geräte · sofort · 0W</small>
+          </button>
+          <div class="mode-divider"></div>
+          <button class="mode-btn" data-mode="api">
+            🌐 Climatiq API<br><small style="font-weight:400;opacity:0.85">Live · präziser · eigener Key</small>
+          </button>
+        </div>
+        <!-- DB Info -->
+        <div class="db-info" id="co2-db-info">
+          <strong>Offline-Datenbank aktiv</strong> – 304 Geräte aus offiziellen Hersteller-Reports
+          (Apple PER, Samsung PCF, Google, Dell, HP, Lenovo, Fairphone u.a.).
+          Wird regelmäßig mit neuen Geräten aktualisiert.
+          Energiebedarf: <strong>~0 Watt</strong>.
+        </div>
+        <!-- API Key (versteckt bis API-Modus) -->
+        <div class="api-key-field" id="co2-api-field">
+          <div class="key-label">Climatiq API-Key</div>
+          <div class="key-input-row">
+            <input type="password" id="climatiq-key" placeholder="Dein Climatiq API-Key…" autocomplete="off"/>
+            <button class="btn-icon" id="toggle-climatiq-vis" title="Key anzeigen">👁</button>
+          </div>
+          <div style="font-size:10.5px;color:var(--muted)">
+            Kostenlos auf <a href="https://www.climatiq.io" target="_blank">climatiq.io</a> registrieren.
+            100 Anfragen/Monat gratis.
+          </div>
+          <div class="api-test-banner" id="climatiq-test-banner"></div>
+          <div class="btn-row">
+            <button class="btn btn-outline" id="test-climatiq">🧪 Verbindung testen</button>
+            <button class="btn btn-primary" id="save-climatiq">💾 Key speichern</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reparierbarkeit -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🔧</span>
+        <div>
+          <div class="card-title">Reparierbarkeits-Score</div>
+          <div class="card-subtitle">iFixit Scores 1–10</div>
+        </div>
+        <span class="status-pill db" id="repair-status-pill" style="margin-left:auto">● Datenbank</span>
+      </div>
+      <div class="card-body">
+        <div class="source-mode" id="repair-mode">
+          <button class="mode-btn active-db" data-mode="db">
+            📋 Offline-DB<br><small style="font-weight:400;opacity:0.85">210 Geräte · sofort · 0W</small>
+          </button>
+          <div class="mode-divider"></div>
+          <button class="mode-btn" data-mode="api">
+            🌐 iFixit API<br><small style="font-weight:400;opacity:0.85">Live · aktuell · öffentlich</small>
+          </button>
+        </div>
+        <div class="db-info" id="repair-db-info">
+          <strong>Offline-Datenbank aktiv</strong> – 210+ Geräte aus iFixit Repairability Scores,
+          EU ESPR Index 2024, Fairphone/Framework Angaben.
+          Energiebedarf: <strong>~0 Watt</strong>.
+        </div>
+        <div class="api-key-field" id="repair-api-field">
+          <div class="db-info" style="background:#E3F2FD;border-color:#90CAF9;color:#1565C0">
+            ℹ️ Die iFixit API ist <strong>öffentlich & kostenlos</strong> – kein Key nötig.
+            Aktivieren lädt Scores live beim Produktaufruf
+            (~2–5 Sekunden, Netzwerk erforderlich).
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lokale Shops -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🗺️</span>
+        <div>
+          <div class="card-title">Lokale Shops</div>
+          <div class="card-subtitle">Second-Hand &amp; Repair in der Nähe</div>
+        </div>
+        <span class="status-pill api" id="shops-status-pill" style="margin-left:auto">🌐 API</span>
+      </div>
+      <div class="card-body">
+        <div class="db-info" style="background:#E3F2FD;border-color:#90CAF9;color:#1565C0">
+          🗺️ Lokale Shops erfordern immer einen Live-Aufruf – die
+          OpenStreetMap-Datenbank ist zu groß für eine eingebettete Offline-Version.
+          <strong>Overpass API</strong> (kostenlos, kein Key nötig).
+          Nur GPS-Koordinaten werden übertragen – keine personenbezogenen Daten.
+        </div>
+        <div class="pref-row">
+          <div>
+            <div class="pref-lbl">Shop-Suche aktivieren</div>
+            <div class="pref-sub">Standortzugriff wird beim ersten Mal abgefragt</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="pref-local" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="pref-row">
+          <div>
+            <div class="pref-lbl">Suchradius</div>
+            <div class="pref-sub" id="radius-label">5 km</div>
+          </div>
+          <input type="range" id="search-radius" min="1" max="20" value="5"
+            style="width:100px;accent-color:var(--green)">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SPRACHE & REGION
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">🌍 Sprache &amp; Region</div>
+    <div class="card">
+      <div class="card-body">
+        <div class="pref-row">
+          <div>
+            <div class="pref-lbl">Land / Region</div>
+            <div class="pref-sub">Beeinflusst angezeigte Secondhand-Plattformen</div>
+          </div>
+          <select id="user-country" style="padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;background:var(--cream);color:var(--text);cursor:pointer;outline:none">
+            <option value="de">🇩🇪 Deutschland</option>
+            <option value="at">🇦🇹 Österreich</option>
+            <option value="ch">🇨🇭 Schweiz</option>
+            <option value="nl">🇳🇱 Niederlande</option>
+            <option value="all">🌍 International</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       OVERLAY-EINSTELLUNGEN
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">🎨 Overlay-Einstellungen</div>
+    <div class="card">
+      <div class="card-body">
+        <div class="pref-row">
+          <div>
+            <div class="pref-lbl">Vorgänger-Hinweis anzeigen</div>
+            <div class="pref-sub">Günstiges Vorgänger-Modell vorschlagen (nur Elektronik)</div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="pref-predecessor" checked><span class="slider"></span></label>
+        </div>
+        <div class="pref-row">
+          <div>
+            <div class="pref-lbl">Preis-CO₂-Index anzeigen</div>
+            <div class="pref-sub">kg CO₂ pro Euro Neu- vs. Refurbished-Kauf</div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="pref-price-index" checked><span class="slider"></span></label>
+        </div>
+        <div class="pref-row">
+          <div>
+            <div class="pref-lbl">CO₂-Monatsbudget</div>
+            <div class="pref-sub" id="budget-sub">Deaktiviert</div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="pref-budget"><span class="slider"></span></label>
+        </div>
+        <div id="budget-field" style="display:none">
+          <div class="key-input-row">
+            <input type="number" id="budget-input" placeholder="z.B. 50" min="1" max="9999" style="max-width:120px"/>
+            <span style="line-height:38px;font-size:12px;color:var(--muted)">kg CO₂ / Monat</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       STATISTIKEN
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">📊 Deine Statistik</div>
+    <div class="card">
+      <div class="card-body">
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-num" id="stat-total">–</div>
+            <div class="stat-lbl">kg CO₂ gespart</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="stat-scans">–</div>
+            <div class="stat-lbl">Produkte gescannt</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="stat-ach">–</div>
+            <div class="stat-lbl">Achievements</div>
+          </div>
+        </div>
+        <div class="sep"></div>
+        <div class="btn-row">
+          <button class="btn btn-danger" id="btn-reset">🗑 Daten zurücksetzen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-save-all" style="flex:1">💾 Alle Einstellungen speichern</button>
+    </div>
+  </div>
+
+  <!-- DB-Update-Status -->
+  <div class="section">
+    <div class="section-label">🔄 Datenbank-Updates</div>
+    <div class="card">
+      <div class="card-body">
+        <div class="db-info" id="update-status-info">
+          Prüfe Update-Status…
+        </div>
+        <div class="btn-row" style="margin-top:8px">
+          <button class="btn btn-outline" id="btn-force-update">🔄 Jetzt auf Updates prüfen</button>
+        </div>
+        <div class="api-test-banner" id="update-banner"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    EcoTrace Plugin · Offline-First · Open Source ·
+    Energieeffizient durch lokale Datenbanken 🌱
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="carbonLogic.js"></script>
+  <script src="services/utils.js"></script>
+  <script src="services/achievementService.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
