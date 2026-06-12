@@ -290,6 +290,26 @@ const PRODUCT_CO2_DB = [
   { keywords: ["acer chromebook"],       co2: 175, source: "IDC LCA Est. 2023", year: 2023, notes: "ChromeOS" },
 
   // ══════════════════════════════════════════════════════
+  //  GAMING-PERIPHERALS & HEADSETS
+  //  Quellen: IDC/Gartner LCA Est. 2023, iFixit Teardowns
+  // ══════════════════════════════════════════════════════
+  { keywords: ["gaming headset"],           co2: 22,  source: "IDC/Gartner LCA Est. 2023", year: 2023, notes: "Kabelgebunden, Plastik/Metall ~400g" },
+  { keywords: ["gaming-headset"],           co2: 22,  source: "IDC/Gartner LCA Est. 2023", year: 2023, notes: "Kabelgebunden, Plastik/Metall ~400g" },
+  { keywords: ["headset", "mikrofon"],      co2: 20,  source: "IDC/Gartner LCA Est. 2023", year: 2023, notes: "PC-Headset mit Mikrofon ~300g" },
+  { keywords: ["headset", "xbox"],          co2: 20,  source: "IDC/Gartner LCA Est. 2023", year: 2023, notes: "Gaming-Headset Konsole" },
+  { keywords: ["headset", "ps4"],           co2: 20,  source: "IDC/Gartner LCA Est. 2023", year: 2023, notes: "Gaming-Headset Konsole" },
+  { keywords: ["headset", "ps5"],           co2: 20,  source: "IDC/Gartner LCA Est. 2023", year: 2023, notes: "Gaming-Headset Konsole" },
+  { keywords: ["gaming controller"],        co2: 15,  source: "IDC/Gartner LCA Est. 2023", year: 2023, notes: "Wireless Controller ~250g" },
+  { keywords: ["gaming maus"],              co2: 8,   source: "IDC/Gartner LCA Est. 2023", year: 2023, notes: "Optische Maus ~100g" },
+  { keywords: ["gaming tastatur"],          co2: 20,  source: "IDC/Gartner LCA Est. 2023", year: 2023, notes: "Mechanische Tastatur ~1 kg" },
+  { keywords: ["gaming stuhl"],             co2: 95,  source: "ADEME 2021",                year: 2021, notes: "Ergonomischer Racing-Stuhl ~25 kg" },
+  { keywords: ["gaming chair"],             co2: 95,  source: "ADEME 2021",                year: 2021, notes: "Racing Chair ~25 kg" },
+  { keywords: ["gaming monitor"],           co2: 320, source: "Dell PCF 2023",             year: 2023, notes: "27 Zoll 144Hz ~4.5 kg" },
+  { keywords: ["headset"],                  co2: 18,  source: "IDC/Gartner LCA Est. 2023", year: 2023, notes: "Standard PC-Headset ~250g" },
+  { keywords: ["wireless headset"],         co2: 25,  source: "IDC/Gartner LCA Est. 2023", year: 2023, notes: "Kabellos mit Akku ~350g" },
+  { keywords: ["wireless gaming headset"],  co2: 25,  source: "IDC/Gartner LCA Est. 2023", year: 2023, notes: "Kabellos Gaming ~350g" },
+
+  // ══════════════════════════════════════════════════════
   //  KOPFHÖRER Over-Ear
   //  Quelle: Hersteller-Nachhaltigkeitsberichte / Teardowns
   // ══════════════════════════════════════════════════════

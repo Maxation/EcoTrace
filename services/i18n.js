@@ -147,7 +147,7 @@ const TRANSLATIONS = {
     info_kofi_text:     "EcoTrace ist kostenlos, werbefrei und Open Source. Wenn das Plugin dir geholfen hat, freuen wir uns über einen Kaffee.",
     info_kofi_btn:      "☕ Auf Ko-fi unterstützen",
     info_affiliate_title:"* Affiliate-Links",
-    info_version:       "EcoTrace Plugin v2.3.0 · Offline-First · Open Source",
+    info_version:       "EcoTrace Plugin v2.3.2 · Offline-First · Open Source",
     // Info panel: philosophy section
     info_why_title:     "🌱 Warum Offline-Datenbanken?",
     info_energy_title:  "Energieeffizienz:",
@@ -158,7 +158,7 @@ const TRANSLATIONS = {
     info_priv_body:     "Weniger Netzwerkverkehr bedeutet weniger Daten die deinen Browser verlassen.",
     info_live_cta:      "Live-APIs sind optional und können in den <strong>⚙ Einstellungen</strong> zugeschaltet werden.",
     // CO₂ section
-    info_co2_db:        "Produkt-Datenbank (441 Geräte, offline)",
+    info_co2_db:        "Produkt-Datenbank (456 Geräte, offline)",
     info_co2_db_body:   "Produktspezifische Werte aus offiziellen Hersteller-Lifecycle-Reports: Apple PER, Samsung PCF Datasheets, Google Environmental Reports, Dell/HP/Lenovo PCF, Fairphone Impact Reports.",
     info_co2_api_body:  "Wissenschaftlich validierte Emissionsfaktoren. Quellen: EcoInvent v3.8, IPCC AR6, EU-JRC, HIGG MSI, Ecobilan. Aktivierbar unter ⚙ Einstellungen.",
     info_co2_mock:      "Kategorie-Durchschnitte (Fallback)",
@@ -212,7 +212,7 @@ const TRANSLATIONS = {
     badge_pickup:       "Lokal abholbar",
 
     // Settings panel extra
-    sp_db_sub_devices:   "441 Geräte · sofort",
+    sp_db_sub_devices:   "456 Geräte · sofort",
     sp_country_hint:     "Beeinflusst welche Secondhand-Plattformen angezeigt werden.",
     sp_budget_off:       "Deaktiviert",
 
@@ -365,7 +365,7 @@ const TRANSLATIONS = {
     info_kofi_text:     "EcoTrace is free, ad-free and open source. If this plugin helped you, we'd love a coffee.",
     info_kofi_btn:      "☕ Support on Ko-fi",
     info_affiliate_title:"* Affiliate links",
-    info_version:       "EcoTrace Plugin v2.3.0 · Offline-First · Open Source",
+    info_version:       "EcoTrace Plugin v2.3.2 · Offline-First · Open Source",
     // Info panel: philosophy section
     info_why_title:     "🌱 Why offline databases?",
     info_energy_title:  "Energy efficiency:",
@@ -376,7 +376,7 @@ const TRANSLATIONS = {
     info_priv_body:     "Less network traffic means less data leaving your browser.",
     info_live_cta:      "Live APIs are optional and can be enabled in <strong>⚙ Settings</strong>.",
     // CO₂ section
-    info_co2_db:        "Product database (441 devices, offline)",
+    info_co2_db:        "Product database (456 devices, offline)",
     info_co2_db_body:   "Product-specific values from official manufacturer lifecycle reports: Apple PER, Samsung PCF Datasheets, Google Environmental Reports, Dell/HP/Lenovo PCF, Fairphone Impact Reports.",
     info_co2_api_body:  "Scientifically validated emission factors. Sources: EcoInvent v3.8, IPCC AR6, EU-JRC, HIGG MSI, Ecobilan. Activatable under ⚙ Settings.",
     info_co2_mock:      "Category averages (fallback)",
@@ -416,7 +416,7 @@ const TRANSLATIONS = {
     cmp_heating:        (kg) => `${Math.round(kg / 30 * 30)} days home heating`,
     cmp_car_km:         (kg) => `${Math.round(kg * 5)} km car trip`,
     // Settings panel extra
-    sp_db_sub_devices:  "441 devices · instant",
+    sp_db_sub_devices:  "456 devices · instant",
     sp_country_hint:    "Affects which second-hand platforms are shown.",
     sp_budget_off:      "Disabled",
     // Info panel section titles

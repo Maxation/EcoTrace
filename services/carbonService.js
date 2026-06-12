@@ -342,14 +342,23 @@ const CarbonService = {
     const t = (title || "").toLowerCase();
 
     if (category === "electronics") {
-      if (t.includes("iphone") || t.includes("galaxy") || t.includes("pixel") || t.includes("smartphone") || t.includes("handy"))
+      // ── Reihenfolge wichtig: spezifischere zuerst ─────────
+      // Headset/Kopfhörer VOR Laptop prüfen, da Amazon-Breadcrumbs
+      // oft "PC & Laptop" enthalten auch für Headset-Kategorien
+      if (t.includes("kopfhörer") || t.includes("headphone") || t.includes("headset") ||
+          t.includes("airpod")    || t.includes("wh-1000")   || t.includes("earphone") ||
+          t.includes("in-ear")    || t.includes("over-ear")  || t.includes("earbud"))
+        return "electronics_headphones";
+      if (t.includes("iphone") || t.includes("galaxy") || t.includes("pixel") ||
+          t.includes("smartphone") || t.includes("handy"))
         return "electronics_smartphone";
-      if (t.includes("macbook") || t.includes("laptop") || t.includes("notebook"))
+      // Laptop nur wenn im TITEL (nicht nur Breadcrumb) vorhanden
+      if (t.includes("macbook") || t.includes("notebook") ||
+          (t.includes("laptop") && !t.includes("für pc") && !t.includes("for pc") &&
+           !t.includes("gaming") && !t.includes("headset") && !t.includes("controller")))
         return "electronics_laptop";
       if (t.includes("ipad") || t.includes("tablet"))
         return "electronics_tablet";
-      if (t.includes("kopfhörer") || t.includes("headphone") || t.includes("airpod") || t.includes("wh-1000"))
-        return "electronics_headphones";
       return "electronics_default";
     }
 

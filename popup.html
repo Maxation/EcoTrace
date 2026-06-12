@@ -2,497 +2,332 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoTrace – Einstellungen</title>
+  <title>EcoTrace Dashboard</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap');
-
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&family=DM+Serif+Display&display=swap');
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --cream:   #F5F5DC;
-      --green:   #228B22;
-      --green2:  #1B5E20;
-      --amber:   #FFBF00;
-      --blue:    #1565C0;
-      --text:    #2C2C1E;
-      --muted:   #6B6B50;
-      --border:  #D4D4AA;
-      --white:   #FAFAF0;
-      --red:     #C62828;
+      --cream:#F5F5DC; --green:#228B22; --green2:#1B5E20; --amber:#FFBF00;
+      --text:#2C2C1E; --muted:#6B6B50; --border:#D4D4AA; --white:#FAFAF0;
     }
+    body { width: 360px; min-height: 560px; background: var(--cream);
+           font-family: 'DM Sans', system-ui, sans-serif; color: var(--text); }
 
-    body {
-      width: 480px;
-      min-height: 560px;
-      background: var(--cream);
-      font-family: 'DM Sans', system-ui, sans-serif;
-      color: var(--text);
-      overflow-x: hidden;
-    }
+    /* ── Header ── */
+    .header { background: linear-gradient(135deg, #228B22 0%, #1B5E20 100%);
+              padding: 16px 18px 20px; position: relative; overflow: hidden; }
+    .header::before { content:""; position:absolute; inset:0;
+      background: url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 3C14 9 13 14 16 20c1 3 4 4 4 4s3-1 4-4c3-6 2-11-4-17z' fill='%23ffffff' opacity='0.04'/%3E%3C/svg%3E") repeat; }
+    .header-logo { display:flex; align-items:center; gap:10px; margin-bottom:14px; position:relative; }
+    .logo-text h1 { font-family:'DM Serif Display',serif; color:#fff; font-size:19px; line-height:1; }
+    .logo-text p { color:rgba(255,255,255,0.7); font-size:11px; margin-top:2px; }
 
-    /* ── Page header ── */
-    .page-header {
-      background: linear-gradient(135deg, #228B22, #1B5E20);
-      padding: 16px 20px 18px;
-    }
-    .header-logo { display:flex; align-items:center; gap:11px; margin-bottom:4px; }
-    .header-icon {
-      width:42px; height:42px; background:rgba(255,255,255,0.15);
-      border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;
-    }
-    .page-title { font-family:'DM Serif Display',serif; color:#fff; font-size:20px; line-height:1; }
-    .page-subtitle { font-size:11px; color:rgba(255,255,255,0.7); margin-top:2px; }
+    /* ── Hero ── */
+    .hero { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2);
+            border-radius:12px; padding:12px 16px; position:relative; }
+    .hero-label { font-size:9.5px; text-transform:uppercase; letter-spacing:1px;
+                  color:rgba(255,255,255,0.65); margin-bottom:3px; }
+    .hero-value { font-size:36px; font-weight:800; color:#fff; line-height:1;
+                  letter-spacing:-1px; }
+    .hero-unit { font-size:13px; color:rgba(255,255,255,0.75); margin-top:1px; }
+    .hero-equiv { font-size:11.5px; color:var(--amber); font-weight:600; margin-top:6px; }
+    .xp-badge { position:absolute; top:10px; right:12px; background:var(--amber);
+                color:#5D4037; padding:4px 9px; border-radius:20px; font-size:11px;
+                font-weight:800; }
 
-    /* ── Sections ── */
-    .section { padding: 0 16px; margin-top: 14px; }
-    .section-label {
-      font-size: 10px; font-weight: 800; text-transform: uppercase;
-      letter-spacing: 0.8px; color: var(--muted);
-      padding: 0 0 6px; border-bottom: 1px dashed var(--border);
-      margin-bottom: 10px;
-    }
-
-    /* ── Card ── */
-    .card {
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 10px;
-      overflow: hidden;
-    }
-    .card-header {
-      display: flex; align-items: center; gap: 10px;
-      padding: 11px 14px 9px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(255,255,255,0.5);
-    }
-    .card-icon { font-size: 18px; flex-shrink: 0; }
-    .card-title { font-size: 13px; font-weight: 700; color: var(--text); }
-    .card-subtitle { font-size: 10.5px; color: var(--muted); margin-top: 1px; }
-    .card-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 11px; }
-
-    /* ── Source-Mode Slider ── */
-    .source-mode {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      background: #F0F0E0;
-      border: 1.5px solid var(--border);
-      border-radius: 9px;
-      overflow: hidden;
-      font-size: 11.5px;
-      font-weight: 600;
-    }
-    .mode-btn {
-      flex: 1; padding: 8px 10px; text-align: center; cursor: pointer;
-      border: none; background: transparent; font-family: inherit;
-      font-size: 11.5px; font-weight: 600; color: var(--muted);
-      transition: all 0.2s; line-height: 1.3;
-    }
-    .mode-btn.active-db  { background: var(--green);  color: #fff; border-radius: 7px; }
-    .mode-btn.active-api { background: var(--blue);   color: #fff; border-radius: 7px; }
-    .mode-divider { width: 1px; background: var(--border); align-self: stretch; flex-shrink: 0; }
-
-    /* ── Status pill ── */
-    .status-pill {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-size: 10px; font-weight: 700; padding: 3px 8px;
-      border-radius: 20px;
-    }
-    .status-pill.db  { background: #E8F5E9; color: var(--green2); }
-    .status-pill.api { background: #E3F2FD; color: var(--blue); }
-    .status-pill.off { background: #F5F5F5; color: var(--muted); }
-
-    /* ── API Key Field ── */
-    .api-key-field {
-      display: none; /* shown/hidden via JS */
-      flex-direction: column; gap: 6px;
-    }
-    .api-key-field.visible { display: flex; }
-    .key-label {
-      font-size: 10.5px; font-weight: 700; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .key-input-row { display: flex; gap: 7px; }
-    input[type="password"], input[type="text"], input[type="number"] {
-      flex: 1; padding: 8px 11px;
-      background: var(--cream); border: 1.5px solid var(--border);
-      border-radius: 8px; font-size: 12px; font-family: inherit;
-      color: var(--text); outline: none; transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(34,139,34,0.1); }
-    input.is-valid { border-color: var(--green); }
-    input.is-invalid { border-color: var(--red); }
-    .btn-icon {
-      padding: 0 11px; border: 1.5px solid var(--border); border-radius: 8px;
-      background: transparent; cursor: pointer; font-size: 14px;
-      transition: all 0.2s; flex-shrink: 0;
-    }
-    .btn-icon:hover { border-color: var(--green); }
-
-    /* ── API Test Banner ── */
-    .api-test-banner {
-      font-size: 11px; font-weight: 600; padding: 6px 10px;
-      border-radius: 7px; display: none;
-    }
-    .api-test-banner.testing { display:block; background:#E3F2FD; color:var(--blue); }
-    .api-test-banner.ok      { display:block; background:#E8F5E9; color:var(--green2); }
-    .api-test-banner.error   { display:block; background:#FFEBEE; color:var(--red); }
-
-    /* ── DB Info ── */
-    .db-info {
-      background: linear-gradient(135deg,#E8F5E9,#F1F8E9);
-      border: 1px solid #A5D6A7; border-radius: 8px;
-      padding: 8px 11px; font-size: 10.5px; color: var(--green2);
-      line-height: 1.55;
-    }
-    .db-info strong { font-weight: 700; }
-
-    /* ── Preferences toggles ── */
-    .pref-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 7px 0; border-bottom: 1px dashed var(--border);
-    }
-    .pref-row:last-child { border-bottom: none; padding-bottom: 0; }
-    .pref-lbl { font-size: 12.5px; font-weight: 600; }
-    .pref-sub { font-size: 10px; color: var(--muted); margin-top: 1px; }
-    /* Toggle switch */
-    .toggle { position:relative; width:38px; height:20px; flex-shrink:0; }
-    .toggle input { opacity:0; width:0; height:0; }
-    .slider {
-      position:absolute; inset:0; background:#D4D4AA; border-radius:20px;
-      cursor:pointer; transition:0.25s;
-    }
-    .slider::before {
-      content:""; position:absolute; width:14px; height:14px;
-      border-radius:50%; background:#fff; top:3px; left:3px;
-      transition:0.25s; box-shadow:0 1px 3px rgba(0,0,0,0.12);
-    }
-    input:checked + .slider { background: var(--green); }
-    input:checked + .slider::before { transform: translateX(18px); }
+    /* ── Budget-Balken im Header ── */
+    .budget-pill { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);
+                   border-radius:9px; padding:8px 12px; margin-top:10px; position:relative; }
+    .budget-top { display:flex; justify-content:space-between; font-size:10.5px;
+                  color:rgba(255,255,255,0.8); margin-bottom:5px; }
+    .budget-track { background:rgba(255,255,255,0.15); border-radius:5px;
+                    height:12px; overflow:hidden; }
+    .budget-fill { height:100%; border-radius:5px; transition:width 0.5s;
+                   display:flex; align-items:center; padding-left:6px; }
+    .budget-fill span { font-size:9px; font-weight:700; color:#fff; }
 
     /* ── Stats ── */
-    .stats-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
-    }
-    .stat-box {
-      background: var(--cream); border: 1px solid var(--border);
-      border-radius: 9px; padding: 10px 8px; text-align: center;
-    }
-    .stat-num { font-size: 20px; font-weight: 800; color: var(--green); line-height: 1; }
-    .stat-lbl { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); margin-top: 3px; }
+    .stats-row { display:grid; grid-template-columns:1fr 1fr; gap:10px;
+                 padding:12px 14px 0; }
+    .stat-card { background:var(--white); border:1px solid var(--border);
+                 border-radius:11px; padding:11px; text-align:center; }
+    .stat-icon { font-size:18px; margin-bottom:3px; }
+    .stat-val { font-size:18px; font-weight:800; color:var(--green); line-height:1; }
+    .stat-lbl { font-size:9.5px; color:var(--muted); margin-top:3px; text-transform:uppercase; letter-spacing:0.5px; }
 
-    /* ── Buttons ── */
-    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
-    .btn {
-      padding: 9px 16px; border-radius: 9px; font-size: 12px;
-      font-weight: 700; font-family: inherit; cursor: pointer;
-      transition: all 0.2s; border: none;
-    }
-    .btn-primary { background: var(--green); color: #fff; }
-    .btn-primary:hover { background: var(--green2); transform: translateY(-1px); }
-    .btn-outline { background: transparent; color: var(--green); border: 1.5px solid var(--green); }
-    .btn-outline:hover { background: rgba(34,139,34,0.07); }
-    .btn-danger { background: transparent; color: var(--red); border: 1.5px solid #FFCDD2; }
-    .btn-danger:hover { background: #FFEBEE; border-color: var(--red); }
+    /* ── Tabs ── */
+    .tabs { display:flex; border-bottom:2px solid var(--border); margin:12px 14px 0; }
+    .tab { flex:1; padding:8px 4px; background:none; border:none; cursor:pointer;
+           font-size:11.5px; font-weight:600; color:var(--muted); font-family:inherit;
+           border-bottom:2px solid transparent; margin-bottom:-2px; transition:all 0.2s; }
+    .tab.active { color:var(--green); border-bottom-color:var(--green); }
 
-    /* ── Separator ── */
-    .sep { height: 1px; background: var(--border); margin: 4px 0; }
+    /* ── Tab-Content ── */
+    .tab-panel { display:none; padding:12px 14px 14px; }
+    .tab-panel.active { display:block; }
 
-    /* ── Footer ── */
-    .page-footer {
-      text-align: center; font-size: 10.5px; color: var(--muted);
-      padding: 12px 16px 20px;
-      border-top: 1px dashed var(--border);
-      margin-top: 14px;
-    }
+    /* ── Log-Tab ── */
+    .section-title { font-size:10px; font-weight:700; text-transform:uppercase;
+                     letter-spacing:0.7px; color:var(--muted); margin-bottom:8px; }
+    .log-list { display:flex; flex-direction:column; gap:5px; }
+    .log-item { background:var(--white); border:1px solid var(--border); border-radius:9px;
+                padding:8px 11px; display:flex; justify-content:space-between; align-items:center; }
+    .log-title { font-size:11.5px; color:var(--text); max-width:195px;
+                 overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .log-meta { font-size:10px; color:var(--muted); margin-top:2px; }
+    .log-savings { font-size:13px; font-weight:700; color:var(--green); white-space:nowrap; }
+    .log-empty { text-align:center; color:var(--muted); font-size:12px; padding:20px; line-height:1.6; }
 
-    /* ── Toast ── */
-    #toast {
-      position: fixed; bottom: 18px; left: 50%;
-      transform: translateX(-50%) translateY(50px);
-      background: var(--green2); color: #fff;
-      padding: 9px 20px; border-radius: 22px;
-      font-size: 12.5px; font-weight: 600;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
-      opacity: 0; pointer-events: none; z-index: 999;
-      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    /* ── Achievements-Tab ── */
+    .ach-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+    .ach-card { background:var(--white); border:1px solid var(--border); border-radius:10px;
+                padding:10px; display:flex; flex-direction:column; align-items:center;
+                text-align:center; gap:4px; transition:all 0.2s; }
+    .ach-card.locked { opacity:0.4; filter:grayscale(1); }
+    .ach-card.unlocked { border-color:var(--green); box-shadow:0 2px 8px rgba(34,139,34,0.12); }
+    .ach-card:hover { transform:translateY(-1px); }
+    .ach-icon-big { font-size:24px; }
+    .ach-title-sm { font-size:11px; font-weight:700; color:var(--text); line-height:1.2; }
+    .ach-desc-sm { font-size:9.5px; color:var(--muted); line-height:1.3; }
+    .ach-xp-sm { font-size:10px; font-weight:700; color:var(--amber);
+                  background:#FFF8E1; padding:1px 6px; border-radius:10px; }
+    .ach-progress-wrap{width:100%;height:4px;background:#E8E8CC;border-radius:4px;margin-top:5px;overflow:hidden}
+    .ach-progress-bar{height:100%;background:linear-gradient(90deg,var(--amber),#E65100);border-radius:4px;transition:width 0.4s ease}
+    .ach-progress-lbl{font-size:8.5px;color:var(--muted);margin-top:2px;text-align:center}
 
-    a { color: var(--green); }
+    /* ── Level-Progress ── */
+    .level-bar { background:var(--white); border:1px solid var(--border); border-radius:11px;
+                 padding:11px 12px; margin-bottom:10px; }
+    .level-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .level-title { font-size:14px; font-weight:700; }
+    .level-xp { font-size:11px; color:var(--muted); }
+    .level-track { background:var(--border); border-radius:6px; height:10px; overflow:hidden; }
+    .level-fill { height:100%; background:linear-gradient(90deg,#228B22,#4CAF50);
+                  border-radius:6px; transition:width 0.6s; }
+
+    /* ── Actions ── */
+    .action-row { display:flex; gap:8px; margin-top:12px; }
+    .btn { flex:1; padding:9px; border-radius:9px; font-size:11.5px; font-weight:600;
+           cursor:pointer; font-family:inherit; transition:all 0.2s; }
+    .btn-primary { background:var(--green); color:#fff; border:none; }
+    .btn-primary:hover { background:var(--green2); }
+    .btn-outline { background:transparent; color:var(--green); border:1.5px solid var(--green); }
+    .btn-outline:hover { background:rgba(34,139,34,0.07); }
+    .btn-danger { background:transparent; color:#C62828; border:1.5px solid #FFCDD2; }
+    .btn-danger:hover { background:#FFEBEE; border-color:#C62828; }
+    .btn-amber { background:var(--amber); color:#5D4037; border:none; font-weight:700; }
+    .btn-amber:hover { background:#F0B000; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width:4px; }
+    ::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+    /* ── Footer-Bar ── */
+    .footer-bar { display:flex; gap:0; border-top:1px solid var(--border);
+                  background:var(--white); position:sticky; bottom:0; z-index:10; }
+    .footer-btn { flex:1; padding:9px 4px; background:none; border:none; cursor:pointer;
+                  font-size:11px; font-weight:600; color:var(--muted); font-family:inherit;
+                  transition:all 0.2s; display:flex; flex-direction:column; align-items:center;
+                  gap:3px; line-height:1; }
+    .footer-btn:hover { color:var(--green); background:rgba(34,139,34,0.06); }
+    .footer-btn-icon { font-size:15px; }
+
+    /* ── Inline Panels ── */
+    #panels-wrap { position:relative; }
+    .popup-panel { background:var(--white); border-top:2px solid var(--green);
+                   transition:opacity 0.2s, transform 0.2s; }
+    .pp-header { display:flex; justify-content:space-between; align-items:center;
+                 padding:10px 14px 8px; background:linear-gradient(135deg,#228B22,#1B5E20);
+                 position:sticky; top:0; z-index:5; }
+    .pp-header span { color:#fff; font-size:13px; font-weight:700; }
+    .pp-close { background:rgba(255,255,255,0.2); border:none; color:#fff; width:24px; height:24px;
+                border-radius:50%; cursor:pointer; font-size:13px; display:flex;
+                align-items:center; justify-content:center; }
+    .pp-close:hover { background:rgba(255,255,255,0.35); }
+    .pp-body { padding:10px 14px 16px; max-height:420px; overflow-y:auto; }
+    .pp-section { margin-bottom:14px; }
+    .pp-section-title { font-size:10px; font-weight:700; text-transform:uppercase;
+                        letter-spacing:0.7px; color:var(--muted); margin-bottom:7px; }
+    .pp-text { font-size:11px; color:var(--text); line-height:1.5; }
+    .pp-mode-row { display:flex; gap:6px; margin-bottom:6px; }
+    .pp-mode-btn { flex:1; padding:6px 8px; border:1.5px solid var(--border); border-radius:8px;
+                   background:var(--white); cursor:pointer; font-family:inherit; font-size:11px;
+                   font-weight:600; color:var(--muted); text-align:center; transition:all 0.15s; }
+    .pp-mode-btn span { display:block; font-size:9px; font-weight:400; margin-top:2px; color:#aaa; }
+    .pp-mode-btn.active { border-color:var(--green); color:var(--green); background:#F0FFF0; }
+    .pp-toggle-row { display:flex; align-items:center; gap:8px; padding:4px 0;
+                     font-size:12px; cursor:pointer; color:var(--text); }
+    .pp-toggle-row input { width:14px; height:14px; accent-color:var(--green); cursor:pointer; }
+    .pp-label { font-size:11px; color:var(--muted); margin-bottom:4px; display:block; }
+    .pp-select { width:100%; padding:6px 8px; border:1.5px solid var(--border); border-radius:8px;
+                 font-family:inherit; font-size:12px; background:var(--white); color:var(--text); }
+    .pp-key-row { margin-top:8px; }
+    .pp-key-row label { font-size:11px; color:var(--muted); display:block; margin-bottom:4px; }
+    .pp-save-btn { width:100%; padding:10px; background:var(--green); color:#fff; border:none;
+                   border-radius:9px; font-family:inherit; font-size:13px; font-weight:700;
+                   cursor:pointer; margin-top:8px; transition:background 0.2s; }
+    .pp-save-btn:hover { background:var(--green2); }
+    .pp-kofi-btn { display:inline-block; padding:10px 20px; background:#FF5E5B;
+                   color:#fff; border-radius:9px; text-decoration:none; font-weight:700;
+                   font-size:13px; transition:opacity 0.2s; }
+    .pp-kofi-btn:hover { opacity:0.85; }
+
+    /* ── Wishlist ── */
+    .wishlist-item { background:var(--white); border:1px solid var(--border); border-radius:9px;
+                     padding:9px 11px; margin-bottom:6px; position:relative; }
+    .wishlist-item-title { font-size:12px; font-weight:600; color:var(--text);
+                           padding-right:24px; line-height:1.3; }
+    .wishlist-item-meta { font-size:10px; color:var(--muted); margin-top:3px; }
+    .wishlist-item-reminder { font-size:10px; color:var(--amber); font-weight:600; margin-top:3px; }
+    .wishlist-item-actions { display:flex; gap:5px; margin-top:7px; flex-wrap:wrap; }
+    .wishlist-search-btn { font-size:10.5px; padding:4px 9px; border-radius:6px;
+                           border:1.5px solid; font-family:inherit; cursor:pointer;
+                           font-weight:600; background:transparent; transition:opacity 0.15s; }
+    .wishlist-search-btn:hover { opacity:0.75; }
+    .wishlist-delete-btn { position:absolute; top:8px; right:9px; background:none;
+                           border:none; cursor:pointer; font-size:14px; color:var(--muted);
+                           line-height:1; padding:2px; }
+    .wishlist-delete-btn:hover { color:#C62828; }
+    .wishlist-co2-badge { font-size:9.5px; background:#E8F5E9; color:#2E7D32;
+                          padding:2px 7px; border-radius:10px; font-weight:700;
+                          display:inline-block; margin-top:4px; }
   </style>
 </head>
 <body>
 
   <!-- Header -->
-  <div class="page-header">
+  <div class="header">
     <div class="header-logo">
-      <div class="header-icon">
-        <svg width="24" height="24" viewBox="0 0 24 24">
-          <path d="M12 3C8 7 7 10 9 14c1 2 3 3 3 3s2-1 3-3c2-4 1-7-3-11z" fill="#fff"/>
-          <path d="M12 14 Q10 11 8 9" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div>
-        <div class="page-title">EcoTrace Einstellungen</div>
-        <div class="page-subtitle">Datenquellen · API-Keys · Präferenzen</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════
-       DATENQUELLEN
-  ══════════════════════════════════════════ -->
-  <div class="section">
-    <div class="section-label">⚡ Datenquellen konfigurieren</div>
-
-    <!-- CO₂-Berechnung -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-icon">📦</span>
-        <div>
-          <div class="card-title">CO₂-Berechnung</div>
-          <div class="card-subtitle">Produktspezifische Emissionswerte</div>
-        </div>
-        <span class="status-pill db" id="co2-status-pill" style="margin-left:auto">● Datenbank</span>
-      </div>
-      <div class="card-body">
-        <!-- Mode-Switcher -->
-        <div class="source-mode" id="co2-mode">
-          <button class="mode-btn active-db" data-mode="db">
-            📋 Offline-DB<br><small style="font-weight:400;opacity:0.85">304 Geräte · sofort · 0W</small>
-          </button>
-          <div class="mode-divider"></div>
-          <button class="mode-btn" data-mode="api">
-            🌐 Climatiq API<br><small style="font-weight:400;opacity:0.85">Live · präziser · eigener Key</small>
-          </button>
-        </div>
-        <!-- DB Info -->
-        <div class="db-info" id="co2-db-info">
-          <strong>Offline-Datenbank aktiv</strong> – 304 Geräte aus offiziellen Hersteller-Reports
-          (Apple PER, Samsung PCF, Google, Dell, HP, Lenovo, Fairphone u.a.).
-          Wird regelmäßig mit neuen Geräten aktualisiert.
-          Energiebedarf: <strong>~0 Watt</strong>.
-        </div>
-        <!-- API Key (versteckt bis API-Modus) -->
-        <div class="api-key-field" id="co2-api-field">
-          <div class="key-label">Climatiq API-Key</div>
-          <div class="key-input-row">
-            <input type="password" id="climatiq-key" placeholder="Dein Climatiq API-Key…" autocomplete="off"/>
-            <button class="btn-icon" id="toggle-climatiq-vis" title="Key anzeigen">👁</button>
-          </div>
-          <div style="font-size:10.5px;color:var(--muted)">
-            Kostenlos auf <a href="https://www.climatiq.io" target="_blank">climatiq.io</a> registrieren.
-            100 Anfragen/Monat gratis.
-          </div>
-          <div class="api-test-banner" id="climatiq-test-banner"></div>
-          <div class="btn-row">
-            <button class="btn btn-outline" id="test-climatiq">🧪 Verbindung testen</button>
-            <button class="btn btn-primary" id="save-climatiq">💾 Key speichern</button>
-          </div>
-        </div>
+      <svg width="36" height="36" viewBox="0 0 36 36">
+        <circle cx="18" cy="18" r="18" fill="rgba(255,255,255,0.15)"/>
+        <path d="M18 4C12 10 11 16 14 22c1.5 3 4 5 4 5s2.5-2 4-5c3-6 2-12-4-18z" fill="#fff"/>
+        <path d="M18 22 Q15 16 12 12" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>
+      <div class="logo-text">
+        <h1>EcoTrace</h1>
+        <p id="lbl-dashboard">CO₂-Dashboard</p>
       </div>
     </div>
 
-    <!-- Reparierbarkeit -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-icon">🔧</span>
-        <div>
-          <div class="card-title">Reparierbarkeits-Score</div>
-          <div class="card-subtitle">iFixit Scores 1–10</div>
-        </div>
-        <span class="status-pill db" id="repair-status-pill" style="margin-left:auto">● Datenbank</span>
-      </div>
-      <div class="card-body">
-        <div class="source-mode" id="repair-mode">
-          <button class="mode-btn active-db" data-mode="db">
-            📋 Offline-DB<br><small style="font-weight:400;opacity:0.85">210 Geräte · sofort · 0W</small>
-          </button>
-          <div class="mode-divider"></div>
-          <button class="mode-btn" data-mode="api">
-            🌐 iFixit API<br><small style="font-weight:400;opacity:0.85">Live · aktuell · öffentlich</small>
-          </button>
-        </div>
-        <div class="db-info" id="repair-db-info">
-          <strong>Offline-Datenbank aktiv</strong> – 210+ Geräte aus iFixit Repairability Scores,
-          EU ESPR Index 2024, Fairphone/Framework Angaben.
-          Energiebedarf: <strong>~0 Watt</strong>.
-        </div>
-        <div class="api-key-field" id="repair-api-field">
-          <div class="db-info" style="background:#E3F2FD;border-color:#90CAF9;color:#1565C0">
-            ℹ️ Die iFixit API ist <strong>öffentlich & kostenlos</strong> – kein Key nötig.
-            Aktivieren lädt Scores live beim Produktaufruf
-            (~2–5 Sekunden, Netzwerk erforderlich).
-          </div>
-        </div>
-      </div>
+    <div class="hero">
+      <div class="xp-badge" id="xp-badge">0 XP</div>
+      <div class="hero-label" id="lbl-total-savings">Gesamtersparnis</div>
+      <div class="hero-value" id="total-savings">0.0</div>
+      <div class="hero-unit" id="lbl-co2-saved">kg CO₂ gespart</div>
+      <div class="hero-equiv" id="hero-equiv">🌱 Starte auf Amazon.de!</div>
     </div>
 
-    <!-- Lokale Shops -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-icon">🗺️</span>
-        <div>
-          <div class="card-title">Lokale Shops</div>
-          <div class="card-subtitle">Second-Hand &amp; Repair in der Nähe</div>
-        </div>
-        <span class="status-pill api" id="shops-status-pill" style="margin-left:auto">🌐 API</span>
+    <!-- Budget-Balken -->
+    <div class="budget-pill" id="budget-pill" style="display:none">
+      <div class="budget-top">
+        <span id="lbl-monthly-budget">Monatsbudget</span>
+        <span id="budget-label">0 / 0 kg</span>
       </div>
-      <div class="card-body">
-        <div class="db-info" style="background:#E3F2FD;border-color:#90CAF9;color:#1565C0">
-          🗺️ Lokale Shops erfordern immer einen Live-Aufruf – die
-          OpenStreetMap-Datenbank ist zu groß für eine eingebettete Offline-Version.
-          <strong>Overpass API</strong> (kostenlos, kein Key nötig).
-          Nur GPS-Koordinaten werden übertragen – keine personenbezogenen Daten.
-        </div>
-        <div class="pref-row">
-          <div>
-            <div class="pref-lbl">Shop-Suche aktivieren</div>
-            <div class="pref-sub">Standortzugriff wird beim ersten Mal abgefragt</div>
-          </div>
-          <label class="toggle">
-            <input type="checkbox" id="pref-local" checked>
-            <span class="slider"></span>
-          </label>
-        </div>
-        <div class="pref-row">
-          <div>
-            <div class="pref-lbl">Suchradius</div>
-            <div class="pref-sub" id="radius-label">5 km</div>
-          </div>
-          <input type="range" id="search-radius" min="1" max="20" value="5"
-            style="width:100px;accent-color:var(--green)">
+      <div class="budget-track">
+        <div class="budget-fill" id="budget-fill" style="width:0%">
+          <span id="budget-pct-label"></span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       SPRACHE & REGION
-  ══════════════════════════════════════════ -->
-  <div class="section">
-    <div class="section-label">🌍 Sprache &amp; Region</div>
-    <div class="card">
-      <div class="card-body">
-        <div class="pref-row">
-          <div>
-            <div class="pref-lbl">Land / Region</div>
-            <div class="pref-sub">Beeinflusst angezeigte Secondhand-Plattformen</div>
-          </div>
-          <select id="user-country" style="padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;background:var(--cream);color:var(--text);cursor:pointer;outline:none">
-            <option value="de">🇩🇪 Deutschland</option>
-            <option value="at">🇦🇹 Österreich</option>
-            <option value="ch">🇨🇭 Schweiz</option>
-            <option value="nl">🇳🇱 Niederlande</option>
-            <option value="all">🌍 International</option>
-          </select>
-        </div>
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon">🔍</div>
+      <div class="stat-val" id="scan-count">0</div>
+      <div class="stat-lbl" id="lbl-scans">Scans</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🏅</div>
+      <div class="stat-val" id="ach-count">0</div>
+      <div class="stat-lbl" id="lbl-achievements">Achievements</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" data-tab="log" id="tab-lbl-log">📋 Aktivitäten</button>
+    <button class="tab" data-tab="achievements" id="tab-lbl-badges">🏅 Badges</button>
+    <button class="tab" data-tab="actions" id="tab-lbl-actions">⚡ Aktionen</button>
+    <button class="tab" data-tab="wishlist" id="tab-lbl-wishlist">⭐ Wunschliste</button>
+  </div>
+
+  <!-- Tab: Log -->
+  <div class="tab-panel active" id="tab-log">
+    <div class="section-title" id="lbl-recent">Letzte Aktivitäten</div>
+    <div class="log-list" id="log-list">
+      <div class="log-empty">
+        <div style="font-size:32px;margin-bottom:8px">🛍️</div>
+        Besuche eine Produktseite auf<br>Amazon.de und speichere deine<br>erste CO₂-Ersparnis!
       </div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       OVERLAY-EINSTELLUNGEN
-  ══════════════════════════════════════════ -->
-  <div class="section">
-    <div class="section-label">🎨 Overlay-Einstellungen</div>
-    <div class="card">
-      <div class="card-body">
-        <div class="pref-row">
-          <div>
-            <div class="pref-lbl">Vorgänger-Hinweis anzeigen</div>
-            <div class="pref-sub">Günstiges Vorgänger-Modell vorschlagen (nur Elektronik)</div>
-          </div>
-          <label class="toggle"><input type="checkbox" id="pref-predecessor" checked><span class="slider"></span></label>
-        </div>
-        <div class="pref-row">
-          <div>
-            <div class="pref-lbl">Preis-CO₂-Index anzeigen</div>
-            <div class="pref-sub">kg CO₂ pro Euro Neu- vs. Refurbished-Kauf</div>
-          </div>
-          <label class="toggle"><input type="checkbox" id="pref-price-index" checked><span class="slider"></span></label>
-        </div>
-        <div class="pref-row">
-          <div>
-            <div class="pref-lbl">CO₂-Monatsbudget</div>
-            <div class="pref-sub" id="budget-sub">Deaktiviert</div>
-          </div>
-          <label class="toggle"><input type="checkbox" id="pref-budget"><span class="slider"></span></label>
-        </div>
-        <div id="budget-field" style="display:none">
-          <div class="key-input-row">
-            <input type="number" id="budget-input" placeholder="z.B. 50" min="1" max="9999" style="max-width:120px"/>
-            <span style="line-height:38px;font-size:12px;color:var(--muted)">kg CO₂ / Monat</span>
-          </div>
-        </div>
-      </div>
+  <!-- Tab: Achievements -->
+  <div class="tab-panel" id="tab-achievements">
+    <div class="level-bar" id="level-bar"></div>
+    <div class="section-title" id="lbl-all-badges">Alle Badges</div>
+    <div class="ach-grid" id="ach-grid"></div>
+  </div>
+
+  <!-- Tab: Wishlist -->
+  <div class="tab-panel" id="tab-wishlist">
+    <div class="section-title" id="lbl-wishlist-title">Meine Wunschliste</div>
+    <div id="wishlist-add-row" style="display:flex;gap:6px;margin-bottom:10px">
+      <input type="text" id="wishlist-input" placeholder="Produktname eingeben…"
+             style="flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px">
+      <button class="btn btn-primary" id="wishlist-add-btn" style="flex-shrink:0;padding:7px 12px">+ Merken</button>
+    </div>
+    <div id="wishlist-list"></div>
+    <div id="wishlist-empty" style="display:none;text-align:center;color:var(--muted);font-size:12px;padding:20px">
+      <div style="font-size:28px;margin-bottom:6px">⭐</div>
+      <span id="lbl-wishlist-empty">Noch keine Produkte auf der Wunschliste.</span>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       STATISTIKEN
-  ══════════════════════════════════════════ -->
-  <div class="section">
-    <div class="section-label">📊 Deine Statistik</div>
-    <div class="card">
-      <div class="card-body">
-        <div class="stats-grid">
-          <div class="stat-box">
-            <div class="stat-num" id="stat-total">–</div>
-            <div class="stat-lbl">kg CO₂ gespart</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-num" id="stat-scans">–</div>
-            <div class="stat-lbl">Produkte gescannt</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-num" id="stat-ach">–</div>
-            <div class="stat-lbl">Achievements</div>
-          </div>
-        </div>
-        <div class="sep"></div>
-        <div class="btn-row">
-          <button class="btn btn-danger" id="btn-reset">🗑 Daten zurücksetzen</button>
-        </div>
-      </div>
+  <!-- Tab: Aktionen -->
+  <div class="tab-panel" id="tab-actions">
+    <div class="section-title" id="lbl-report-mgmt">Report & Verwaltung</div>
+    <div class="action-row">
+      <button class="btn btn-amber" id="btn-report" id="btn-report">📊 <span id="lbl-report">Monatsbericht</span></button>
+      <button class="btn btn-primary" id="btn-options" id="btn-options">⚙ <span id="lbl-settings-act">Einstellungen</span></button>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-outline" id="btn-csv-export" id="btn-csv-export">📥 <span id="lbl-csv">CO₂-Daten als CSV</span></button>
+      <button class="btn btn-outline" id="btn-osm" id="btn-osm">🗺️ <span id="lbl-nearby">Second-Hand in der Nähe</span></button>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-danger" id="btn-reset" id="btn-reset">🗑 <span id="lbl-reset">Daten zurücksetzen</span></button>
     </div>
   </div>
 
-  <div class="section">
-    <div class="btn-row">
-      <button class="btn btn-primary" id="btn-save-all" style="flex:1">💾 Alle Einstellungen speichern</button>
-    </div>
+  <!-- Inline Panels -->
+  <div id="panels-wrap"></div>
+
+  <!-- Footer Bar -->
+  <div class="footer-bar">
+    <button class="footer-btn" id="footer-settings">
+      <span class="footer-btn-icon">⚙️</span>
+      <span id="lbl-footer-settings">Einstellungen</span>
+    </button>
+    <button class="footer-btn" id="footer-sources">
+      <span class="footer-btn-icon">🔍</span>
+      <span id="lbl-footer-sources">Datenquellen</span>
+    </button>
+    <button class="footer-btn" id="footer-support">
+      <span class="footer-btn-icon">☕</span>
+      <span id="lbl-footer-support">Support</span>
+    </button>
   </div>
 
-  <!-- DB-Update-Status -->
-  <div class="section">
-    <div class="section-label">🔄 Datenbank-Updates</div>
-    <div class="card">
-      <div class="card-body">
-        <div class="db-info" id="update-status-info">
-          Prüfe Update-Status…
-        </div>
-        <div class="btn-row" style="margin-top:8px">
-          <button class="btn btn-outline" id="btn-force-update">🔄 Jetzt auf Updates prüfen</button>
-        </div>
-        <div class="api-test-banner" id="update-banner"></div>
-      </div>
-    </div>
-  </div>
 
-  <div class="page-footer">
-    EcoTrace Plugin · Offline-First · Open Source ·
-    Energieeffizient durch lokale Datenbanken 🌱
-  </div>
-
-  <div id="toast"></div>
-
+  <script src="services/i18n.js"></script>
   <script src="carbonLogic.js"></script>
   <script src="services/utils.js"></script>
   <script src="services/achievementService.js"></script>
-  <script src="options.js"></script>
+  <script src="services/circularSwap.js"></script>
+  <script src="services/reportService.js"></script>
+  <script src="popup.js"></script>
 </body>
 </html>
