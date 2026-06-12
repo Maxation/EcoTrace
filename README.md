@@ -63,4 +63,4 @@ We welcome any contributions to scale and improve this tool!
 
 Feel free to open issues, fork the repo, and submit Pull Requests!
 
-[📥 Download EcoTrace (.zip)](https://github.com/Maxation/EcoTrace/releases/latest/download/EcoTrace.zip)
+[📥 Download EcoTrace (.zip)](https://github.com/Maxation/EcoTrace/releases)
