@@ -62,3 +62,5 @@ We welcome any contributions to scale and improve this tool!
 * **Porting:** Help us expand the plugin to work on other online retail platforms.
 
 Feel free to open issues, fork the repo, and submit Pull Requests!
+
+[📥 Download EcoTrace (.zip)](https://github.com/Maxation/EcoTrace/releases/latest/download/EcoTrace.zip)
