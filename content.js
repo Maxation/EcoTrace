@@ -1241,7 +1241,7 @@
         <!-- Version -->
         <div class="info-version">
           ${t('info_version')} ·
-          <a class="info-link" href="https://github.com/ecotrace-plugin" target="_blank" rel="noopener">GitHub ↗</a>
+          <a class="info-link" href="https://github.com/Maxation/EcoTrace" target="_blank" rel="noopener">GitHub ↗</a>
         </div>
 
       </div>
