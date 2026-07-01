@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/Maxation/EcoTrace)
 [![Platform](https://img.shields.io/badge/platform-Chrome%20|%20Brave%20|%20Edge-lightgrey.svg)](https://github.com/Maxation/EcoTrace)
 
-**[📖 View Overview (README)](./README.md)** | [📥 Installation Guide](./INSTALL.md)
+**[📖 View Overview (README)](./README.md)** | [📥 Installation Guide](./INSTALL.md)| [💾 Privacy Policy](./PRIVACY_POLICY.md)
 
 **EcoTrace** is a free, open-source browser extension (Chrome) for Amazon designed to break down barriers to sustainable purchasing decisions. It automatically embeds a compact carbon footprint analysis and practical eco-friendly alternatives directly into any Amazon product page—requiring zero effort from the user.
 
