@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "EcoTrace – Sustainable Shopping",
   "short_name": "EcoTrace",
-  "version": "2.3.2",
+  "version": "2.3.4",
   "description": "Carbon footprint · Repairability · Price-to-CO₂ index · Local shops · Achievements",
   "permissions": [
     "storage",

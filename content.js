@@ -1,5 +1,5 @@
 // ============================================================
-//  EcoTrace – content.js  v4.0
+//  EcoTrace – content.js  v2.3
 //  Neue Features:
 //    · Preis-CO₂-Index (kg CO₂ / €)
 //    · Reparierbarkeits-Score (iFixit)
